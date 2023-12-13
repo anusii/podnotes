@@ -62,8 +62,9 @@ class _ListSharedNotesState extends State<ListSharedNotes> {
                   title: Text(sharedNotesList[index][0]),
                   subtitle: Text('Shared by: ${sharedNotesList[index][1]} '
                       '\nPermissions: ${sharedNotesList[index][3]}'
-                      '\nCreated on: ${sharedNotesList[index][5]}'
-                      '\nLast modified on: ${sharedNotesList[index][6]}'),
+                      // '\nCreated on: ${sharedNotesList[index][5]}'
+                      // '\nLast modified on: ${sharedNotesList[index][6]}'
+                      ),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     List notePermission = sharedNotesList[index][3].split(',');

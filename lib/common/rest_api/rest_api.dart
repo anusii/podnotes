@@ -564,10 +564,9 @@ Future<List> getSharedNotesList(Map authData, String webId) async {
             sharedNoteFileContentMap[fileName][sharedKeyPred];
         String fileAccListEnc =
             sharedNoteFileContentMap[fileName][accessListPred];
-        String ctimeEnc =
-            sharedNoteFileContentMap[fileName][createdDateTimePred];
-        String mtimeEnc =
-            sharedNoteFileContentMap[fileName][modifiedDateTimePred];
+
+        // print('\nFile: $sharedNoteFileContentMap[fileName]');
+        // print(sharedNoteFileContentMap[fileName].keys.toList());
 
         // Decrypt the data
 
@@ -631,26 +630,12 @@ Future<List> getSharedNotesList(Map authData, String webId) async {
           ),
         );
 
-        final sharedCTime = encrypterPrv.decrypt(
-          encrypt.Key.fromBase64(
-            ctimeEnc,
-          ),
-        );
-
-        final sharedMTime = encrypterPrv.decrypt(
-          encrypt.Key.fromBase64(
-            mtimeEnc,
-          ),
-        );
-
         sharedFileList.add([
           fileName,
           sharedWebId,
           sharedFilePath,
           sharedAccList,
           sharedKey,
-          sharedCTime,
-          sharedMTime,
         ]);
       }
     }
