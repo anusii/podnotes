@@ -43,6 +43,8 @@ import 'package:solid_auth/solid_auth.dart' as solid_auth;
 /// user's POD is required for any of the functionality of the app requires
 /// access to the user's POD.
 
+// TODO: the file can be removed
+
 const _defaultWebID = 'https://pods.solidcommunity.au';
 const _mainImage = AssetImage('assets/images/podnotes-background.jpg');
 
