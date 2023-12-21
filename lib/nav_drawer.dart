@@ -4,8 +4,10 @@ import 'package:podnotes/common/logout.dart';
 import 'package:podnotes/constants/app.dart';
 import 'package:podnotes/constants/colours.dart';
 import 'package:podnotes/login/screen.dart';
+import 'package:podnotes/main.dart';
 import 'package:podnotes/nav_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 class NavDrawer extends StatelessWidget {
   final String webId;
@@ -153,7 +155,18 @@ class NavDrawer extends StatelessWidget {
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => solid_auth.PodLoginScreen(
+                                    serverURL: 'https://pods.solidcommunity.au',
+                                    solidProjectURL: "https://solidproject.org",
+                                    pageHeader: 'LOGIN WITH YOUR POD',
+                                    backgroundImage: AssetImage(
+                                        'assets/images/podnotes-background.jpg'),
+                                    cardColor: bgOffWhite,
+                                    widgetBuilders: [
+                                      navigationScreenBuilder,
+                                      initialSetupScreenBuilder
+                                    ])),
                       );
                     }
                   },

@@ -25,6 +25,7 @@
 
 library;
 
+
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
@@ -36,8 +37,8 @@ import 'package:podnotes/constants/app.dart';
 import 'package:podnotes/constants/file_structure.dart';
 import 'package:podnotes/constants/rdf_functions.dart';
 import 'package:podnotes/constants/turtle_structures.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 import 'package:pointycastle/asymmetric/api.dart';
-import 'package:solid_auth/solid_auth.dart';
 
 // import 'dart:async';
 
@@ -61,7 +62,7 @@ Future<List> initialStructureTest(Map authData) async {
   for (String containerName in folders) {
     String resourceUrl = webId.replaceAll('profile/card#me', '$containerName/');
     String dPopToken =
-        genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
+        solid_auth.genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
     if (await checkResourceExists(resourceUrl, accessToken, dPopToken, false) ==
         'not-exist') {
       allExists = false;
@@ -78,7 +79,7 @@ Future<List> initialStructureTest(Map authData) async {
       String resourceUrl =
           webId.replaceAll('profile/card#me', '$containerName/$fileName');
       String dPopToken =
-          genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
+          solid_auth.genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
       if (await checkResourceExists(
               resourceUrl, accessToken, dPopToken, false) ==
           'not-exist') {
@@ -170,7 +171,7 @@ Future<String> createItem(
   }
 
   String encDataUrl = webId.replaceAll('profile/card#me', itemLoc);
-  String dPopToken = genDpopToken(encDataUrl, rsaKeyPair, publicKeyJwk, 'POST');
+  String dPopToken = solid_auth.genDpopToken(encDataUrl, rsaKeyPair, publicKeyJwk, 'POST');
 
   final http.Response createResponse;
 
@@ -178,7 +179,7 @@ Future<String> createItem(
     String aclFileUrl =
         webId.replaceAll('profile/card#me', '$itemLoc$itemName');
     String dPopToken =
-        genDpopToken(aclFileUrl, rsaKeyPair, publicKeyJwk, 'PUT');
+        solid_auth.genDpopToken(aclFileUrl, rsaKeyPair, publicKeyJwk, 'PUT');
 
     // The PUT request will create the acl item in the server
     createResponse = await http.put(
@@ -233,7 +234,7 @@ Future<String> initialProfileUpdate(
   String accessToken = authData['accessToken'];
 
   String profUrl = webId.replaceAll('#me', '');
-  String dPopToken = genDpopToken(profUrl, rsaKeyPair, publicKeyJwk, 'PUT');
+  String dPopToken = solid_auth.genDpopToken(profUrl, rsaKeyPair, publicKeyJwk, 'PUT');
 
   // The PUT request will create the acl item in the server
   final updateResponse = await http.put(
@@ -321,7 +322,7 @@ Future<String> updateIndKeyFile(String webId, Map authData, String resName,
   // Update the file
   // First check if the file already contain the same value
   String dPopTokenKeyFile =
-      genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
+      solid_auth.genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
   String keyFileContent =
       await fetchPrvFile(keyFileUrl, accessToken, dPopTokenKeyFile);
   Map keyFileDataMap = getFileContent(keyFileContent);
@@ -358,7 +359,7 @@ Future<String> updateIndKeyFile(String webId, Map authData, String resName,
 
       // Generate DPoP token
       String dPopTokenKeyFilePatch =
-          genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
+          solid_auth.genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
 
       // Run the query
       createUpdateRes = await updateFileByQuery(
@@ -374,7 +375,7 @@ Future<String> updateIndKeyFile(String webId, Map authData, String resName,
 
     // Generate DPoP token
     String dPopTokenKeyFilePatch =
-        genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
+        solid_auth.genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
 
     // Run the query
     createUpdateRes = await updateFileByQuery(
@@ -439,7 +440,7 @@ Future<String> updateNoteFile(
 
   // Generate DPoP token
   String dPopTokenKeyFilePatch =
-      genDpopToken(noteFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
+      solid_auth.genDpopToken(noteFileUrl, rsaKeyPair, publicKeyJwk, 'PATCH');
 
   // Run the query
   String fileUpdateRes = await updateFileByQuery(
@@ -503,7 +504,7 @@ Future<List> getNoteList(Map authData, String notesUrl) async {
 
     // Generate DPoP token
     String dPopTokenNoteFile =
-        genDpopToken(fileItemUrl, rsaKeyPair, publicKeyJwk, 'GET');
+        solid_auth.genDpopToken(fileItemUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
     // Get note file content
     String noteFileContent =
@@ -546,7 +547,7 @@ Future<List> getSharedNotesList(Map authData, String webId) async {
 
     // Generate DPoP token
     String dPopTokenSharedNoteFile =
-        genDpopToken(sharedNotesFileLoc, rsaKeyPair, publicKeyJwk, 'GET');
+        solid_auth.genDpopToken(sharedNotesFileLoc, rsaKeyPair, publicKeyJwk, 'GET');
 
     // Get note file content
     String shredNoteFileContent = await fetchPrvFile(
@@ -569,7 +570,7 @@ Future<List> getSharedNotesList(Map authData, String webId) async {
         String keyFileUrl =
             webId.replaceAll(profCard, '$encDirLoc/$encKeyFile');
         String keydPopToken =
-            genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
+            solid_auth.genDpopToken(keyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
         String keyFileInfo =
             await fetchPrvFile(keyFileUrl, accessToken, keydPopToken);
 
@@ -652,7 +653,7 @@ Future<List> getResourceList(
   // Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
 
   String dPopTokenHome =
-      genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
+      solid_auth.genDpopToken(resourceUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
   final profResponse = await http.get(
     Uri.parse(resourceUrl),
@@ -719,7 +720,7 @@ Future<Map> getNoteContent(
   var publicKeyJwk = rsaInfo['pubKeyJwk'];
   String accessToken = authData['accessToken'];
   String noteUrl = webId.replaceAll(profCard, '$myNotesDirLoc/$noteFileName');
-  String dPopTokenNote = genDpopToken(noteUrl, rsaKeyPair, publicKeyJwk, 'GET');
+  String dPopTokenNote = solid_auth.genDpopToken(noteUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
   String fileContent = await fetchPrvFile(
     noteUrl,
@@ -742,7 +743,7 @@ Future<Map> getNoteContent(
     '$encDirLoc/$indKeyFile',
   );
 
-  String indKeysPopToken = genDpopToken(
+  String indKeysPopToken = solid_auth.genDpopToken(
     indFileUrl,
     rsaKeyPair,
     publicKeyJwk,
@@ -816,7 +817,7 @@ Future<Map> getSharedNoteContent(
   String accessToken = authData['accessToken'];
   String sharedNoteUrl = sharedNoteData[2];
   String dPopTokenNote =
-      genDpopToken(sharedNoteUrl, rsaKeyPair, publicKeyJwk, 'GET');
+      solid_auth.genDpopToken(sharedNoteUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
   String fileContent = await fetchPrvFile(
     sharedNoteUrl,

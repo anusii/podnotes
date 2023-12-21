@@ -32,7 +32,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:podnotes/common/rest_api/rest_api.dart';
 import 'package:podnotes/constants/file_structure.dart';
 import 'package:podnotes/constants/rdf_functions.dart';
-import 'package:solid_auth/solid_auth.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 /// TODO 20231220 gjw REQUIRES A DOC STRING.
 
@@ -84,7 +84,7 @@ Future<bool> verifyEncKey(
       webId.replaceAll('profile/card#me', '$encDirLoc/$encKeyFile');
 
   String dPopToken =
-      genDpopToken(encKeyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
+      solid_auth.genDpopToken(encKeyFileUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
   String encKeyRes = await fetchPrvFile(encKeyFileUrl, accessToken, dPopToken);
 

@@ -35,7 +35,7 @@ import 'package:podnotes/initial_setup/screen.dart';
 import 'package:podnotes/login/pod_reg.dart';
 import 'package:podnotes/nav_screen.dart';
 import 'package:podnotes/widgets/loading_animation.dart';
-import 'package:solid_auth/solid_auth.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 /// A widget to display the initial login screen.
 ///
@@ -155,7 +155,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           onPressed: () async => launchIssuerReg(
-              (await getIssuer(webIdTextController.text)).toString()),
+              (await solid_auth.getIssuer(webIdTextController.text)).toString()),
           child: const Text(
             'GET A POD',
             style: TextStyle(
@@ -188,7 +188,7 @@ class LoginScreen extends StatelessWidget {
 
               // Get issuer URI.
 
-              String issuerUri = await getIssuer(webIdTextController.text);
+              String issuerUri = await solid_auth.getIssuer(webIdTextController.text);
 
               // Define scopes. Also possible scopes -> webid, email, api.
 
@@ -201,7 +201,7 @@ class LoginScreen extends StatelessWidget {
               // Authentication process for the POD issuer.
 
               var authData =
-                  await authenticate(Uri.parse(issuerUri), scopes, context);
+                  await solid_auth.authenticate(Uri.parse(issuerUri), scopes, context);
 
               // Decode access token to get the correct webId.
 
@@ -226,7 +226,7 @@ class LoginScreen extends StatelessWidget {
                 String accessToken = authData['accessToken'];
                 String profCardUrl = webId.replaceAll('#me', '');
                 String dPopToken =
-                    genDpopToken(profCardUrl, rsaKeyPair, publicKeyJwk, 'GET');
+                    solid_auth.genDpopToken(profCardUrl, rsaKeyPair, publicKeyJwk, 'GET');
 
                 String profData =
                     await fetchPrvFile(profCardUrl, accessToken, dPopToken);

@@ -1,6 +1,6 @@
 name: podnotes
 description: Privacy preserving note taking app using PODs.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -30,11 +30,16 @@ dependencies:
   openid_client: ^0.4.8
   pointycastle: ^3.7.3
   rdflib: ^0.2.8
-  solid_auth: ^0.1.13
   solid_encrypt: ^0.1.10
   universal_io: ^2.2.2
   url_launcher: ^6.2.1
   window_manager: ^0.3.7
+
+dependency_overrides:
+  solid_auth:
+    git:
+      url: https://github.com/anusii/solid-auth.git
+      ref: zy/login
 
 flutter_launcher_icons:
   image_path: "assets/images/podnotes.png"

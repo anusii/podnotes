@@ -27,6 +27,9 @@ import 'package:podnotes/common/responsive.dart';
 import 'package:podnotes/constants/app.dart';
 import 'package:podnotes/constants/colours.dart';
 import 'package:podnotes/login/screen.dart';
+import 'package:podnotes/main.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
+
 
 class TokenExpiry extends StatefulWidget {
   final Map authData;
@@ -105,7 +108,17 @@ class _TokenExpiryState extends State<TokenExpiry> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
+                                builder: (context) => solid_auth.PodLoginScreen(
+                                    serverURL: 'https://pods.solidcommunity.au',
+                                    solidProjectURL: "https://solidproject.org",
+                                    pageHeader: 'LOGIN WITH YOUR POD',
+                                    backgroundImage: AssetImage(
+                                        'assets/images/podnotes-background.jpg'),
+                                    cardColor: bgOffWhite,
+                                    widgetBuilders: [
+                                      navigationScreenBuilder,
+                                      initialSetupScreenBuilder
+                                    ]),
                               ),
                             );
                           },

@@ -26,11 +26,15 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:podnotes/constants/colours.dart';
+import 'package:podnotes/initial_setup/screen.dart';
+import 'package:podnotes/nav_screen.dart';
 
 import 'package:window_manager/window_manager.dart';
 
 import 'package:podnotes/login/screen.dart';
 import 'package:podnotes/utils/is_desktop.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 void main() async {
   // Remove [debugPrint] messages from production code.
@@ -84,12 +88,45 @@ class PodNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'POD Note Taker',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
-      ),
-      home: LoginScreen(),
-    );
+        title: 'POD Note Taker',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.lightGreen,
+        ),
+        // home: LoginScreen(),
+        home: solid_auth.PodLoginScreen(
+            serverURL: 'https://pods.solidcommunity.au',
+            solidProjectURL: "https://solidproject.org",
+            pageHeader: 'LOGIN WITH YOUR POD',
+            backgroundImage:
+                AssetImage('assets/images/podnotes-background.jpg'),
+            cardColor: bgOffWhite,
+            widgetBuilders: [
+              navigationScreenBuilder,
+              initialSetupScreenBuilder
+            ]));
   }
+}
+
+Widget navigationScreenBuilder(
+  BuildContext context,
+  Map authData,
+  String webId,
+) {
+  return NavigationScreen(
+    webId: webId,
+    authData: authData,
+    page: 'home',
+  );
+}
+
+Widget initialSetupScreenBuilder(
+  BuildContext context,
+  Map authData,
+  String webId,
+) {
+  return InitialSetupScreen(
+    authData: authData,
+    webId: webId,
+  );
 }

@@ -36,7 +36,7 @@ import 'package:podnotes/nav_drawer.dart';
 import 'package:podnotes/nav_screen.dart';
 import 'package:podnotes/widgets/data_cell.dart';
 import 'package:podnotes/widgets/loading_animation.dart';
-import 'package:solid_auth/solid_auth.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 bool isNamePattern(String pattern) {
   // Check if the pattern contains the solid server url or profile card hashtag
@@ -129,7 +129,7 @@ DataRow permissionRow(
                             var publicKeyJwk = rsaInfo['pubKeyJwk'];
 
                             // Get the file content
-                            String dPopToken = genDpopToken(
+                            String dPopToken = solid_auth.genDpopToken(
                                 resLocUrl + resourceName,
                                 rsaKeyPair,
                                 publicKeyJwk,

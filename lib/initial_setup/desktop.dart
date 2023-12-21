@@ -34,6 +34,7 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:fast_rsa/fast_rsa.dart' as frsa;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:podnotes/main.dart';
 import 'package:solid_auth/solid_auth.dart';
 import 'package:solid_encrypt/solid_encrypt.dart';
 
@@ -49,6 +50,7 @@ import 'package:podnotes/utils/truncate_str.dart';
 import 'package:podnotes/widgets/err_dialogs.dart';
 import 'package:podnotes/widgets/loading_animation.dart';
 import 'package:podnotes/widgets/msg_box.dart';
+import 'package:solid_auth/solid_auth.dart' as solid_auth;
 
 class InitialSetupDesktop extends StatefulWidget {
   final Map resNeedToCreate;
@@ -761,7 +763,7 @@ class _InitialSetupDesktopState extends State<InitialSetupDesktop> {
                                 // //     "NAME", nameController, ''),
                                 // // createInputDateField(context,
                                 // //     "DATE OF BIRTH", dobController, ''),
-                              )))),
+                              ),))),
                 ]))),
         Center(
           child: Padding(
@@ -788,7 +790,17 @@ class _InitialSetupDesktopState extends State<InitialSetupDesktop> {
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => solid_auth.PodLoginScreen(
+                                  serverURL: 'https://pods.solidcommunity.au',
+                                  solidProjectURL: "https://solidproject.org",
+                                  pageHeader: 'LOGIN WITH YOUR POD',
+                                  backgroundImage: AssetImage(
+                                      'assets/images/podnotes-background.jpg'),
+                                  cardColor: bgOffWhite,
+                                  widgetBuilders: [
+                                    navigationScreenBuilder,
+                                    initialSetupScreenBuilder
+                                  ])),
                     );
                   },
                 ),
