@@ -15,3 +15,4 @@ Run in browser: [**Web**](https://podnotes.solidcommunity.au).
 ## 0.1 Migrate to latest solidpod package
 
 + Add installer builds [0.1.2 gjw 20250506]
++ Resync and package for distribution [0.1.1 gjw 20250505]
