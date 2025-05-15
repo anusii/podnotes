@@ -1,6 +1,6 @@
-# PodNotes Changelog
+# NotePod Changelog
 
-Recorded here are the high level changes for the PodNotes app.
+Recorded here are the high level changes for the NotePod app.
 
 Guide: Each version update is recorded here with a short user-oriented
 description of the update. Updates in the 0.1.n series are heading
